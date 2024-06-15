@@ -1,0 +1,213 @@
+﻿@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true">
+}
+
+@section scripts {
+    <script  asp-append-version="true" src="~/js/about.js"></script>
+
+}
+
+@*<h1>
+    Captain Sonar Online
+</h1>*@
+
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">About the game</h4>
+                    <hr />
+                    <p class="card-body">Captain Sonar Online is a fan made game based on a table top boardgame, "<a href="#" id="link-to-boardgame" class="link-success">Captain Sonar</a>". CSO is played with 2 players each hunting the other's submmarine on a procedurally generated 2D map. Players take turns traversing the ocean and charging up abilities that allow them to hide from, detect, and destroy their opponant. Currently, CSO is under development. As features are developed the roadmap will be updated accordingly. Thank you for your interest!</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        @*Technologies Card*@
+        <div class="col-md-4">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Technologies</h4>
+                    <hr />
+                    <ul class="card-body">
+                        <li>
+                            <h5>Backend</h5>
+                            <ul>
+                                <li>
+                                    .Net 6
+                                </li>
+                                <li>
+                                    Entity Framework Core 6
+                                </li>
+                                <li>
+                                    Identity Server
+                                </li>
+                                <li>
+                                    SQL Server
+                                </li>
+                                <li>
+                                    OAuth 2.0
+                                </li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>
+                            <h5>Frontend</h5>
+                            <ul>
+                                <li>
+                                    jQuery
+                                </li>
+                                <li>
+                                    Bootstrap 5
+                                </li>
+                                <li>
+                                    HTML & CSS
+                                </li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>
+                            <h5>Hosting</h5>
+                            <ul>
+                                <li>
+                                    Azure
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @*Roadmap Card*@
+        <div class="col-md-8">
+
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Roadmap
+                    </h4>
+                    <hr />
+                    <div class="card-body">
+                        <div class="phase-container">
+                            @*Phase 1*@
+                            <div class="phase-box">
+                                <h5 class="phase-title">Phase 1: Core Gameplay</h5>
+                                <div class="phase-description">Content that is fundamental to the core gameplay</div>
+                                <div class="phase-content">
+                                    <ul>
+                                        <li>
+                                            Make Moves
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*Phase 2*@
+                            <div class="phase-box">
+                                <h5 class="phase-title">Phase 2: Art and Styles</h5>
+                                <div class="phase-description">Making the game and site look visually interesting </div>
+                                <div class="phase-content">
+                                    <ul>
+                                        <li>
+                                            Consistant card styles
+                                        </li>
+                                        <li>
+                                            Consistant button stlyes
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*Phase 3*@
+                            <div class="phase-box">
+                                <h5 class="phase-title">Phase 3: Extra Features</h5>
+                                <div class="phase-description">Features that are cool, but aren't immediantly necessary</div>
+                                <div class="phase-content">
+                                    <ul>
+                                        <li>
+                                            More than 2 player support
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*Phase 4*@
+                            <div class="phase-box">
+                                <h5 class="phase-title">Phase 4: The Moon</h5>
+                                <div class="phase-description">Make the content amazing</div>
+                                <div class="phase-content">
+                                    <ul>
+                                        <li>
+                                            Everything is covered in gold?
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*  Things that belong here
+                    
+                    Phases to Add
+                        
+                        * Phase 1: Base Game functionality
+                            -
+
+                        * Phase 2:
+                            -
+
+                        * Phase 3:
+                            -
+
+                        * Phase 4:
+                            -
+
+                                 
+                    Things to add
+
+                        * Style about page
+                        * Adding Powers functionality to the frontend and the backend
+                        * Adding enemy slide map
+                        * Add sub colision detection
+                        * Add repair requirements for systems powers compatibilities
+                        * Add confirm to forfit/ unfriend modal
+                        * Add turn summary builder (to turn verification?)
+                        * Add messaging functionality
+                        * Add notification systems: email, text, browser options
+                        * Add email confirmation/ change password support
+                        * Add privacy statement
+                        * Build bot to play against
+                        * Add artist support page where they can try assets
+                        * Add landing page with a dummy game 
+                        * Add art/ assets
+                        * Add light theme toggle
+                        * Change account pages to include current themeing 
+                        * Remove unused links (many in account pages)
+                        * Add info/ tool tips to the icons on the play page
+                        * Add missing info high-light system to the play page when player submits turn that is missing data
+                        * Add ability to challenge friends from a dropdown in Games page
+                        * LMAO Github
+                        * Add images to about page
+                        * fw-bolder on all buttons
+                        * check for consistant styling
+                        * Automated state manipulation, maybe T-SQL, maybe a console in the site with EF Core
+                        * Automated testing
+                        * Validate making moves properly! (currently, users can get outside of the bounds of the board) Fix this in JS and C#
+                        * URGENT!!!! Move order discrepency, currently powers are used before the move direction is calculated
+                        * Add error messages to captains log
+                        * Add visual feedback for what is required for a turn to be completed
+                    
+
+            *@
+        </div>
+    </div>
+</div>
+

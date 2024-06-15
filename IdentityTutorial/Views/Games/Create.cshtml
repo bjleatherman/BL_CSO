@@ -1,0 +1,30 @@
+﻿@*@model IdentityTutorial.Models.Game*@
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create a New Game</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="create">
+            <div class="form-group">
+                <label class="control-label">Example Input</label>
+                <input class="form-control" placeholder="No Input Needed" disabled/>
+                <span class="text-danger"></span>
+            </div>
+            <br/>
+            <button id="new-game-btn" type="submit" class="w-50 btn btn-lg btn-primary">New Game</button>
+        </form>
+    </div>
+</div>
+<br/>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <ellipse style="fill-rule: nonzero; fill: rgba(255, 255, 255, 0); stroke: rgb(0, 0, 0); paint-order: fill markers; pointer-events: none; visibility: hidden;" cx="-250" cy="-250" rx="240" ry="240" transform="matrix(-1, 0, 0, -1, 0, 0)">
+    <title>Width of Splines</title>
+  </ellipse>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: rgba(216, 216, 216, 0); stroke-width: 50px;" cx="250" cy="250" rx="120" ry="120">
+    <title>Mine Body</title>
+  </ellipse>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="250" y1="100" x2="250" y2="20" transform="matrix(1, 0, 0, 1, 0.000025, -0.000103)">
+    <title>Line N</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="483.863" y1="250" x2="403.863" y2="250" transform="matrix(-1, 0, 0, -1, 883.863063, 499.999984)">
+    <title>Line E</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="250" y1="500" x2="250" y2="420" transform="matrix(-1, 0, 0, -1, 500.000015, 899.999966)">
+    <title>Line S</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="20" y1="250" x2="100" y2="250" transform="matrix(-1, 0, 0, -1, 120.000019, 499.999984)" bx:origin="0.5 0">
+    <title>Line W</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="87" y1="87" x2="143.569" y2="143.569" bx:origin="0.5 0.500077">
+    <title>Line Diag NW</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="412.999" y1="87" x2="356.43" y2="143.569" transform="matrix(-1, 0, 0, -1, 499.998977, 499.999252)" bx:origin="-1.881428 2.88143">
+    <title>Line Diag SW</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="109.136" y1="88.011" x2="165.705" y2="144.58" transform="matrix(-1, 0, 0, -1, 522.135636, 501.011276)" bx:origin="-1.881428 2.88143">
+    <title>Line Diag SE</title>
+  </line>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-width: 50px;" x1="87" y1="413" x2="144.067" y2="356.934" transform="matrix(-1, 0, 0, -1, 500.000747, 500.000747)" bx:origin="2.856298 -1.907281">
+    <title>Line Diag NE</title>
+  </line>
+</svg>

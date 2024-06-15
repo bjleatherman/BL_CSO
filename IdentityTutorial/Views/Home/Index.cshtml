@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles 
+{
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+}
+
+<div class="text-center text-light">
+    <div class="d-flex justify-content-center">
+        <div class="card bg-dark w-50">
+            <div class="card-body">
+                <div class="card-title">
+                    <h1 class="display-4 fw-bold">Howdy!</h1>
+                </div>
+                <hr />
+                <div class="card-body">
+                    <p>༼ つ ◕_◕ ༽つ Check out the <span><a asp-controller="Home" asp-action="About" class="link-warning">About</a> page for information about Captain Sonar Online!</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="transparent">
+                    <h3>
+                        Login Here
+                    </h3>
+                </div>
+                <div class="bg-dark o-95 ms p-5 rounded-3">
+                    <div class="account-btn-group btn-group-vertical">
+                        <h6>If you already have an account</h6>
+                        <a href="/Identity/Account/Login" class="btn btn-outline-success fw-bolder">Login</a>
+                        <br />
+                        <h6>If you want an account</h6>
+                        <a href="/Identity/Account/Register" class="btn btn-success">Register</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 rounded-3">
+                <div class="Announcements">                        
+                    <h3>Announcements!</h3>
+                    <table class="o-95 table table-dark border-3 announcements-table">
+                        <theead>
+                            <tr>
+                                <th scope="col">status</th>
+                                <th scope="col">change</th>        
+                                <th scope="col">type</th>
+                            </tr>
+                        </theead>
+                        <tbody>
+                            <tr>
+                                <td class="text-success">
+                                    Done ✅ 
+                                </td>
+                                <td>
+                                    Added <a asp-action="Index" asp-controller="Friends" class="link-success">Friends</a> page!
+                                </td>
+                                <td>
+                                    feature
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class ="text-success">
+                                    Done ✅
+                                </td>
+                                <td>
+                                    Move your sub around the map!
+                                </td>
+                                <td>
+                                    feature
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-success">
+                                    Done ✅
+                                </td>
+                                <td>
+                                    Challenge your friends from the <a asp-action="Index" asp-controller="Friends" class="link-success">Friends</a> page!
+                                </td>
+                                <td>
+                                    feature
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-warning">
+                                    Up Next ⏱️
+                                </td>
+                                <td>
+                                    Challenge friends at the <a asp-action="Index" asp-controller="Games" class="link-warning">Games</a> page
+                                </td>
+                                <td>
+                                    feature
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-warning">
+                                    Up Next ⏱️
+                                </td>
+                                <td>
+                                    View the enemy subs current position
+                                </td>
+                                <td>
+                                    feature
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

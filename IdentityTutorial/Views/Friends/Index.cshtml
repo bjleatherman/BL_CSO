@@ -1,0 +1,117 @@
+﻿@model IEnumerable<IdentityTutorial.Models.ViewModels.PlayerFriendVM>
+
+@{
+    ViewData["Title"] = "Friends";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts 
+{
+    <script asp-append-version="true" src="~/js/friendsIndex.js"></script>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/friendsIndex.css" asp-append-version="true">
+}
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="bg-dark p-2 pb-3 ps-5 pe-5 rounded-2">
+            <h1 class="text-light">Friends</h1>
+            <form asp-controller="Friends" asp-action="AddFriend">
+                <div id="warning-message" class="text-warning visually-hidden">Player Cannot be Requested</div>
+                <div class="input-group">
+                    <button id="search-friend-btn" type="button" class="btn btn-warning" value="false">Search For Player</button>
+                    <input class="form-control" type="text" name="searchTerm" id="friend-search" placeholder="Leroy Jenkins" />
+                </div>
+            </form>
+        </div>
+        <div class="col-md-10 col-sm-8"></div>
+    </div>
+</div>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+
+<br />
+
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FriendName)
+            </td>
+                @{
+                    switch (item.StatusCode)
+                    {
+                        case 0: // Recieved
+                            <td>
+                                <form asp-asp-controller="Friends" asp-action="AcceptFriend">
+                                    <input type="text" name="friendName" hidden value="@item.FriendName" />
+                                    <button type="submit" class=" btn btn-sm btn-success">Accept</button>
+                                </form>
+                            </td>
+                            <td>
+                                
+                                <form asp-controller="Friends" asp-action="Delete">
+                                    <input type="text" name="friendName" hidden value="@item.FriendName"/>
+                                    <button type="submit" class=" btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                            break;
+                        case 1: // Pending
+                            <td>
+                                <div class="text-warning">@Html.DisplayFor(modelItem => item.Status)</div>
+                            </td>
+                            <td>
+                                <form asp-controller="Friends" asp-action="Delete">
+                                    <input type="text" name="friendName" hidden value="@item.FriendName"/>
+                                    <button type="submit" class=" btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                            break;
+                        case 2: // Confirmed
+                            <td>
+                                <form asp-action="ChallengeFriend">
+                                    <input type="text" hidden name="friendName" value="@item.FriendName" />
+                                    <button type="submit" class=" btn btn-sm btn-success">Challenge</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form asp-controller="Friends" asp-action="Delete">
+                                    <input type="text" name="friendName" hidden value="@item.FriendName"/>
+                                    <button type="submit" class=" btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                            break;
+                        default:
+                            throw new Exception("Unexpected Status Code in PlayerFriendsVM");
+                    }
+            }
+        </tr>
+}
+    </tbody>
+</table>
+
+@*<td>
+    @Html.DisplayFor(modelItem => item.Status)
+</td>
+<td>
+    <a asp-action="Edit" asp-route-id="@item.FriendId">Edit</a> |
+    <a asp-action="Details" asp-route-id="@item.FriendId">Details</a> |
+    <a asp-action="Delete" asp-route-id="@item.FriendId">Delete</a>
+</td>*@

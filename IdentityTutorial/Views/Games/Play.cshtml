@@ -1,0 +1,541 @@
+﻿@model IdentityTutorial.Models.ViewModels.GameVM
+@using IdentityTutorial.Utilities;
+
+@{
+    ViewData["Title"] = "Play";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*TODO: call the game js for this page only, not globally like it is currently*@
+
+@*Script that converts the model into something that can be accessed by the js file*@
+@section scripts { 
+    <script> var jsonData = @Html.Raw(Json.Serialize(Model)); </script> 
+    <script  asp-append-version="true" src="~/js/helper.js"></script>
+    <script  asp-append-version="true" src="~/js/model.js"></script>
+    <script  asp-append-version="true" src="~/js/gameboard.js"></script>
+    <script  asp-append-version="true" src="~/js/pageElement.js"></script>
+    <script  asp-append-version="true" src="~/js/gamePage.js"></script> 
+}
+
+<div class="container-fluid view-header">
+    <div class="card bg-dark w-100 p-2">
+        <div class="row d-flex w-100 justify-content-between">
+            <div class="col-lg-6 col-md-12">
+                <div class="opponent-view text-light">
+                    <h3>versus</h3>
+                    <h1>@Model.EnemyName</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 flex-just-end">
+
+            @*UI Controls*@
+
+                <div class="btn-group control-group col-auto" role="group">
+                    <button type="button" data-bs-toggle="button" id="powers-btn" class="btn btn-dark active">Powers</button>
+                    <button type="button" data-bs-toggle="button" id="systems-btn" class="btn btn-dark @(Model.TotalCoordinateHistory == "" ? "disabled" : "active") ">Systems</button>
+                    <button type="button" data-bs-toggle="button" id="messages-btn" class="btn btn-dark active">Captains Log</button>
+                    <button type="button" data-bs-toggle="button" id="map-btn" class="btn btn-dark active">Map Controls</button>
+                        @*<button type="button" data-bs-toggle="button" id="enemy-btn" class="btn btn-dark disabled">Enemy Info</button>
+                        <button type="button" data-bs-toggle="button" id="report-btn" class="btn btn-dark disabled">Report</button>*@
+                </div>
+            </div>
+            <br />
+            <div class="row">
+
+            @*Page Output Form*@
+
+                <form method="post" asp-action="Play" class="col-auto" id="form">
+                    @*I dont think Im using any of the specified power inputs*@
+                    <input type="text" asp-for="GameId" value="@Model.GameId" id="game-id-input" hidden />
+                  @*<input type="text" asp-for="Mines" value="@Model.Mines" id="mines-input" hidden />
+                    <input type="text" asp-for="Drones" value="@Model.Drones" id="drones-input" hidden />
+                    <input type="text" asp-for="Sneak" value="@Model.Sneak" id="sneak-input" hidden />
+                    <input type="text" asp-for="Torpedo" value="@Model.Torpedo" id="torpedo-input" hidden />
+                    <input type="text" asp-for="Sonar" value="@Model.Sonar" id="sonar-input" hidden />*@
+                    <input class="hide" type="text" name="direction" data-val="true" data-val-required="The Direction field is required" value="" id="direction-input" />
+                    <input class="hide" type="text" name="systems" data-val="true" data-val-required="The Systems field is required" value="" id="systems-input" />
+                    <input class="hide" type="text" name="power" data-val="true" data-val-required="The Power field is required" value="" id="power-input" />
+                    <input class="hide" type="number" name="firstMoveLocation" data-val="true" data-val-required="" value="" id="first-move-input" />
+                    <input class="hide" type="text" name="activatedPower" data-val="true" data-val-required="" value="" id="activated-power-input" />
+                    <input class="hide" type="number" name="activatedPowerValue" data-val="true" data-val-required="" value="" id="activated-power-value-input" />
+                    <input class="hide" type="text" name="message" data-val="true" data-val-required="" value="" id="message-input" />
+                    <input class="hide" type="number" name="sonarTrueType" data-val="true" data-val-required="" value="" id="sonar-true-type-input" />
+                    <input class="hide" type="number" name="sonarTrueValue" data-val="true" data-val-required="" value="" id="sonar-true-value-input" />
+                    <input class="hide" type="number" name="sonarFalseType" data-val="true" data-val-required="" value="" id="sonar-false-type-input" />
+                    <input class="hide" type="number" name="sonarFalseValue" data-val="true" data-val-required="" value="" id="sonar-false-value-input" />
+                    @*<button type="submit" class="btn btn-danger submit-btn disabled" id="submit-btn">End Turn</button>*@
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="shadow-lg" id="scroll-target" />
+<div>
+    <div class="container-fluid">
+        <div class="row gx-4">
+
+        @*Column 1*@
+
+            <div class="col-lg-5 col-md-12">
+
+            @*Captians Log Display*@
+                <div class="row control-row shadow" id="messages-display">
+                    <div class="panel-group powers">
+                        <div class="panel-header">
+                            <h3>Captain's Log  <span><img class="info-icon" src="/images/info-icon.svg" /></span></h3>
+                            <button type="submit" class="btn btn-danger submit-btn disabled" id="submit-btn">End Turn</button>
+                        </div>
+                        <div class="panel-row" id="@Model.Health">
+                            <div class="power-title">@Model.Health</div>
+                            <div class="health-btn-bar">
+                            @{
+                                for (int i = 0; i < Model.MaxHealth; i++)
+                                {
+                                    if (i <= Model.HealthValue)
+                                    {
+                                        <div class="health-box health-box-filled">❤️</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="health-box health-box-empty"></div>
+                                    }
+                                }
+                            }
+                            </div>
+                        </div>
+                        <div id="model-messages-row" class="panel-row">
+                            <div class="card model-messages">
+                                <div id="model-messages-header" class=" card-title d-flex justify-content-around"></div>
+                                <div id="model-messages-target" class="card-body collapse">
+                                        <ul class="list-group list-group-flush" id="model-messages-list"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            @*Map Controls Display*@
+                <div class="row control-row shadow" id="map-controls-display">
+                    <div class="panel-group systems">
+                        <div class="panel-header">
+                            <h3>Map Controls  <span><img class="info-icon" src="/images/info-icon.svg" /></span></h3>
+                        </div>
+                        <div class="btn-group btn-group-lg gap-1" role="group">
+                            @{
+                                if(Model.TotalCoordinateHistory == "")
+                                {
+                                    <div class="map-control-row">
+                                        <button class="btn btn-outline-dark fw-bolder active map-controls-ui-selected" id="place-first-piece">Place First Piece</button>
+                                        @*<div class="power-title map-control-label">Place First Piece</div>*@
+                                    </div>
+                                }
+                            }
+                            
+                            <div class="map-control-row">
+                                <button class="btn btn-outline-dark fw-bolder disabled" id="enemy-slide-active">View Enemy Map</button>
+                                @*<div class="power-title map-control-label">View Enemy Map</div>*@
+                            </div>
+                            @*<div class="map-control-row">*@
+                                @*<button class="btn btn-outline-dark fw-bolder" id="third-thing">A Third Option</button>*@
+                                @*<div class="power-title map-control-label">A Third Option</div>*@
+                            @*</div>*@
+                            <div class="map-control-row">
+                                <button class="btn btn-outline-dark fw-bolder" id="show-cell-numbers">Show Cell Numbers</button>
+                                @*<div class="power-title map-control-label">A Third Option</div>*@
+                            </div>
+                            <div class="map-control-row">
+                                <button class="btn btn-outline-dark fw-bolder map-controls-ui-selected active" id="clear-cell-numbers">Clear Cell Numbers</button>
+                                @*<div class="power-title map-control-label">A Third Option</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @*Powers Display*@
+                <div class="row control-row shadow" id="powers-display">
+                    <div class="panel-group powers">
+                        <div class="panel-header">
+                            <h3>Powers  <span><img class="info-icon" src="/images/info-icon.svg" /></span></h3>
+                        </div>
+                            <div class="panel-row" id="@Model.Mines">
+                            <div class="power-title">@Model.Mines</div>
+                            @*<div class="power-title">@Model.Mines  <span><img class="info-icon" src="~/images/mine.svg "/></span></div>*@
+                            <div class="power-btn-bar">
+                                @{
+                                    if(Model.MaxMines == Model.MinesValue)
+                                    {
+                                        <button class="power-box power-box-full power-box-text" id="filled-mines">r e a d y</button>
+                                        <div id="target-mines" class="w-auto activated-ui-selected power-box power-box-full power-box-text pe-2 ps-2 d-none">xx</div>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.MaxMines; i++)
+                                        {
+                                            if(i < Model.MinesValue) 
+                                            {
+                                                <div class="power-box power-box-filled"></div>
+                                                continue;
+                                            }
+                                            if(i == Model.MinesValue) 
+                                            {
+                                                <button class="power-box power-box-next power-box-text" id="next-mines">+</button>
+                                                continue;
+                                            }
+                                            if (i > Model.MinesValue)
+                                            {
+                                                <div class="power-box power-box-empty"></div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="panel-row" id="@Model.Drones">
+                            <div class="power-title">@Model.Drones</div>
+                            <div class="power-btn-bar">
+                                @{
+                                    if (Model.MaxDrones == Model.DronesValue)
+                                    {
+                                        <button class="power-box power-box-full power-box-text" id="filled-drones">r e a d y</button>
+                                        <div id="target-drones" class="w-auto activated-ui-selected power-box power-box-full power-box-text pe-2 ps-2 d-none">xx</div>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.MaxDrones; i++)
+                                        {
+                                            if (i < Model.DronesValue)
+                                            {
+                                                <div class="power-box power-box-filled"></div>
+                                                continue;
+                                            }
+                                            if (i == Model.DronesValue)
+                                            {
+                                            <button class="power-box power-box-next power-box-text" id="next-drones">+</button>
+                                                continue;
+                                            }
+                                            if (i > Model.DronesValue)
+                                            {
+                                                <div class="power-box power-box-empty"></div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="panel-row" id="@Model.Sneak">
+                            <div class="power-title">@Model.Sneak</div>
+                            <div class="power-btn-bar">
+                                @{
+                                    if (Model.MaxSneak == Model.SneakValue)
+                                    {
+                                        <button class="power-box power-box-full power-box-text" id="filled-sneak">r e a d y</button>
+                                        <div id="target-sneak" class="w-auto activated-ui-selected power-box power-box-full power-box-text pe-2 ps-2 d-none">xx</div>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.MaxSneak; i++)
+                                        {
+                                            if (i < Model.SneakValue)
+                                            {
+                                                <div class="power-box power-box-filled" ></div>
+                                                continue;
+                                            }
+                                            if (i == Model.SneakValue)
+                                            {
+                                                <button class="power-box power-box-next power-box-text" id="next-sneak">+</button>
+                                                continue;
+                                            }
+                                            if (i > Model.SneakValue)
+                                            {
+                                                <div class="power-box power-box-empty"></div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="panel-row" id="@Model.Torpedo">
+                            <div class="power-title">@Model.Torpedo</div>
+                            <div class="power-btn-bar">
+                                @{
+                                    if (Model.MaxTorpedo == Model.TorpedoValue)
+                                    {
+                                        <button class="power-box power-box-full power-box-text" id="filled-torpedo">r e a d y</button>
+                                        <div id="target-torpedo" class="w-auto activated-ui-selected power-box power-box-full power-box-text pe-2 ps-2 d-none">xx</div>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.MaxTorpedo; i++)
+                                        {
+                                            if (i < Model.TorpedoValue)
+                                            {
+                                                <div class="power-box power-box-filled"></div>
+                                                continue;
+                                            }
+                                            if (i == Model.TorpedoValue)
+                                            {
+                                            <button class="power-box power-box-next power-box-text" id="next-torpedo">+</button>
+                                                continue;
+                                            }
+                                            if (i > Model.TorpedoValue)
+                                            {
+                                                <div class="power-box power-box-empty"></div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="panel-row" id="@Model.Sonar">
+                            <div class="power-title">@Model.Sonar</div>
+                            <div class="power-btn-bar">
+                                @{
+                                    if (Model.MaxSonar == Model.SonarValue)
+                                    {
+                                        <button class="power-box power-box-full power-box-text" id="filled-sonar">r e a d y</button>
+                                        <div id="target-sonar" class="w-auto activated-ui-selected power-box power-box-full power-box-text pe-2 ps-2 d-none">xx</div>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.MaxSonar; i++)
+                                        {
+                                            if (i < Model.SonarValue)
+                                            {
+                                                <div class="power-box power-box-filled" ></div>
+                                                continue;
+                                            }
+                                            if (i == Model.SonarValue)
+                                            {
+                                                <button class="power-box power-box-next power-box-text" id="next-sonar">+</button>
+                                                continue;
+                                            }
+                                            if (i > Model.SonarValue)
+                                            {
+                                                <div class="power-box power-box-empty"></div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            @*Systems Display*@
+                <div class="row control-row shadow @(Model.TotalCoordinateHistory == "" ? "hide" : "")" id="systems-display">
+                    <div class="panel-group systems">
+                        <div class="panel-header">
+                            <h3> Damage to Systems  <span><img class="info-icon" src="/images/info-icon.svg" /></span></h3>
+                            <button class="btn btn-dark direction-label @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="@Model.Surface">@Model.Surface</button>
+                        </div>                        
+                        <div class="systems-direction-labels-group">
+                            <button class="btn btn-dark direction-label @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="@Model.West">
+                                <img class="arrow west-arrow" src="/images/arrow.svg" />
+                                W
+                            </button>
+                            <button class="btn btn-dark direction-label @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="@Model.North">
+                                <img class="arrow north-arrow" src="/images/arrow.svg" />
+                                N
+                            </button>
+                            <button class="btn btn-dark direction-label @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="@Model.South">
+                                S
+                                <img class="arrow south-arrow" src="/images/arrow.svg" />
+                            </button>
+                            <button class="btn btn-dark direction-label @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="@Model.East">
+                                E
+                                <img class="arrow east-arrow" src="/images/arrow.svg" />
+                            </button>
+                        </div>
+                        <div class="systems-direction-group">
+
+                            @*West Direction*@
+                            <div class="systems-container systems-layout-one">
+                                <div class="systems-box" ></div>
+                                <div class="systems-box" ></div>
+                                <div class="systems-box" ></div>
+                                <button class="systems-box pipe-one circle @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w0">
+                                    A0
+                                </button>
+                                <div class="systems-box pipe pipe-extend-l-r pipe-one"></div>
+                                <button class="systems-box  pipe-one circle @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w1">
+                                    E0
+                                </button>
+                                <div class="systems-box tall-pipe pipe-one"></div>
+                                <div class="systems-box"></div>
+                                <button class="systems-box pipe-one circle @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w2">
+                                    D0
+                                </button>
+                                <div class="systems-box d-block" >
+                                    <div class="corner-container">
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-one"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box br-bl pipe-one"></div>
+                                        <div class="corner-box pipe-one"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                    </div>
+                                </div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w3">
+                                    D1
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w4">
+                                    R0
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="w5">
+                                    R1
+                                </button>
+                            </div>
+
+                            @*North Direction*@
+                            <div class="systems-container systems-layout-two">
+                                <div class="systems-box d-block" >
+                                    <div class="corner-container">
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box br-tl pipe-two"></div>
+                                        <div class="corner-box pipe-two"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-two"></div>
+                                        <div class="corner-box"></div>
+                                    </div>
+                                </div>
+                                <div class="systems-box pipe pipe-two" ></div>
+                                <div class="systems-box pipe pipe-two " ></div>
+                                <button class="systems-box pipe-two circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n0">
+                                    E1
+                                </button>
+                                <div class="systems-box"></div>
+                                <div class="systems-box"></div>
+                                <button class="systems-box pipe-two circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n1">
+                                    A1
+                                </button>
+                                <div class="systems-box pipe pipe-two"></div>
+                                <button class="systems-box pipe-two circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n2">
+                                    E2
+                                </button>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n3">
+                                    D2
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n4">
+                                    A2
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="n5">
+                                    R2
+                                </button>
+                            </div>
+
+                            @*South Direction*@
+                            <div class="systems-container systems-layout-two">
+                                <div class="systems-box pipe pipe-two" ></div>
+                                <div class="systems-box pipe pipe-two" ></div>
+                                <div class="systems-box pipe pipe-two" ></div>
+                                <button class="systems-box pipe-three circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s0">
+                                    D3
+                                </button>
+                                <div class="systems-box"></div>
+                                <div class="systems-box"></div>
+                                <button class="systems-box pipe-three circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s1">
+                                    E3
+                                </button>
+                                <div class="systems-box pipe pipe-three"></div>
+                                <button class="systems-box pipe-three circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s2">
+                                    A3
+                                </button>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s3">
+                                    A4
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s4">
+                                    R3
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="s5">
+                                    E4
+                                </button>
+                            </div>
+
+                            @*East Direction*@
+                            <div class="systems-container systems-layout-two">
+                                <div class="systems-box d-block" >
+                                    <div class="corner-container">
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-two"></div>
+                                        <div class="corner-box br-tr pipe-two"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-two"></div>
+                                        <div class="corner-box"></div>
+                                    </div>
+                                </div>
+                                <div class="systems-box" ></div>
+                                <div class="systems-box" ></div>
+                                <button class="systems-box pipe-two circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e0">
+                                    D4
+                                </button>
+                                <div class="systems-box"></div>
+                                <div class="systems-box"></div>
+                                <button class="systems-box pipe-three circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e1">
+                                    E5
+                                </button>
+                                <div class="systems-box"></div>
+                                <button class="systems-box pipe-one circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e2">
+                                    A5
+                                </button>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box pipe pipe-one" ></div>
+                                <div class="systems-box d-block" >
+                                    <div class="corner-container">
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-one"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box pipe-one"></div>
+                                        <div class="corner-box br-br pipe-one"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                        <div class="corner-box"></div>
+                                    </div>
+                                </div>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e3">
+                                    R4
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e4">
+                                    D5
+                                </button>
+                                <button class="systems-box circle  @(Model.TotalCoordinateHistory == "" ? "disabled" : "")" id="e5">
+                                    R5
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        @*Column 2*@
+
+            <div class="col-lg-7 row-col justify-content-center" id="board-container-columns">
+
+            @*Game Here!*@
+                <div class="shadow-lg" id="board-container">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@**@
+

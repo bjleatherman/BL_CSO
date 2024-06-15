@@ -1,0 +1,18 @@
+﻿body {
+}
+
+.phase-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+}
+
+.phase-box {
+    border: 1px solid white;
+    border-radius:.25em;
+    padding: .5em;
+}
+.card{
+    opacity:95%;
+    border: 1px solid white;
+}

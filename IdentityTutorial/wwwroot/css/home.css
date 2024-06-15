@@ -1,0 +1,19 @@
+﻿th.table-head {
+    font-size: 1.75em;
+    padding-top: 0;
+}
+
+.account-btn-group {
+    padding-top: .5em;
+}
+.transparent {
+    color: transparent;
+}
+
+.card {
+    opacity: 95%;
+    border: 1px solid white;
+}
+.o-95 {
+    opacity: 95%;
+}

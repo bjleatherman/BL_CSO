@@ -1,0 +1,24 @@
+﻿body {
+    /*background: linear-gradient(to bottom, #0077c9 0%, #00335c 100%);*/
+    background: url(/images/background1080p.jpg);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    /*background: #f1f1f1;*/
+    background: transparant;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }

@@ -1,0 +1,180 @@
+﻿@model IdentityTutorial.Models.ViewModels.GameVM
+
+@{
+    ViewData["Title"] = "Play";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Play</h1>
+
+<div>
+    <h4>GameVM</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastMoveDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastMoveDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MapLength)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MapLength)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MapWidth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MapWidth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IslandCoordinates)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IslandCoordinates)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxHealth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxHealth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxMines)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxMines)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxDrones)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxDrones)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxSneak)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxSneak)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxTorpedo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxTorpedo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxSonar)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxSonar)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PlayerName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PlayerName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsTurn)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsTurn)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalDirectionHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalDirectionHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CurrentDirectionHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CurrentDirectionHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalCoordinateHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalCoordinateHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CurrentCoordinateHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CurrentCoordinateHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HealthValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HealthValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MinesValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MinesValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DronesValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DronesValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SneakValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SneakValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TorpedoValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TorpedoValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SonarValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SonarValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EnemyName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnemyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EnemyDirectionHisory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnemyDirectionHisory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EnemyCurrentDirectionHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnemyCurrentDirectionHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EnemyHealth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnemyHealth)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

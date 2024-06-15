@@ -1,0 +1,83 @@
+﻿@model IEnumerable<IdentityTutorial.Models.ViewModels.UserGameVM>
+
+@{
+    ViewData["Title"] = "Games ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*TODO: Create Page for when a user has no games TFW no games*@
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="bg-dark p-2 pb-3 ps-5 pe-5 rounded-2">
+            <h1 class="text-light">Games</h1>
+            <div class="d-flex">
+                <form asp-action="Create">
+                   <button id="new-game-btn" type="submit" class="fw-bolder w-10 btn btn-success">New Game</button>
+                </form>
+                <a asp-controller="Friends" asp-action="Index" class="fw-bolder ms-2 btn btn-warning">Challenge a Friend</a>
+            </div>
+            
+        </div>
+        <div class="col-md-10 col-sm-8"></div>
+    </div>
+</div>
+
+@*<p>
+    <a asp-controller="Games" asp-action="Create">Create New</a>
+</p>*@
+
+<br />
+
+
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Player1)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Player2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.GameId)
+            </th>*@
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Player1)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Player2)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.GameId)
+            </td>*@
+            <td>
+                <a class="btn btn-success" asp-controller="Games" asp-action="Play" asp-route-id="@item.GameId">Play</a>
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a>*@
+
+                <form asp-action="Delete">
+                    <input type="text" name="gameId" value="@item.GameId" hidden />
+                    <button id="new-game-btn" type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
